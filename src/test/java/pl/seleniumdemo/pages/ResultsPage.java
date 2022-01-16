@@ -16,7 +16,7 @@ public class ResultsPage {
     @FindBy(xpath = "//h2[@class='text-center']")
     private WebElement noResultHeading;
 
-    public ResultsPage (WebDriver driver) {
+    public ResultsPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 
