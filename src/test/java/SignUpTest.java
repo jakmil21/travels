@@ -35,4 +35,54 @@ public class SignUpTest {
         WebElement welcomeText = driver.findElement(By.xpath("//h3[@class='RTL']"));
         Assert.assertEquals(welcomeText.getText(), "Hi, " + name + " " + lastname);
     }
+
+    @Test
+    public void signUpWithoutUserData() {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.get("http://www.kurs-selenium.pl/demo/");
+
+        driver.findElements(By.xpath("//li[@id='li_myaccount']")).stream().filter(WebElement::isDisplayed).findFirst().ifPresent(WebElement::click);
+        driver.findElements(By.xpath("//a[text()='  Sign Up']")).stream().filter(WebElement::isDisplayed).findFirst().ifPresent(WebElement::click);
+        driver.findElement(By.xpath("//button[text()=' Sign Up']")).click();
+
+        List<String> alertsList = driver.findElements(By.xpath("//div[@class='alert alert-danger']/p"))
+                .stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        Assert.assertTrue(alertsList.contains("The Email field is required."));
+        Assert.assertTrue(alertsList.contains("The Password field is required."));
+        Assert.assertTrue(alertsList.contains("The Password field is required."));
+        Assert.assertTrue(alertsList.contains("The First name field is required."));
+        Assert.assertTrue(alertsList.contains("The Last Name field is required."));
+    }
+
+    @Test
+    public void signUpWithInvalidEmail() {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.get("http://www.kurs-selenium.pl/demo/");
+
+        String name = "Anrzej";
+        String lastname = "Testowy";
+        driver.findElements(By.xpath("//li[@id='li_myaccount']")).stream().filter(WebElement::isDisplayed).findFirst().ifPresent(WebElement::click);
+        driver.findElements(By.xpath("//a[text()='  Sign Up']")).stream().filter(WebElement::isDisplayed).findFirst().ifPresent(WebElement::click);
+        driver.findElement(By.name("firstname")).sendKeys(name);
+        driver.findElement(By.name("lastname")).sendKeys(lastname);
+        driver.findElement(By.name("phone")).sendKeys("111222333");
+        driver.findElement(By.name("email")).sendKeys("zlytest.pl");
+        driver.findElement(By.name("password")).sendKeys("test1!");
+        driver.findElement(By.name("confirmpassword")).sendKeys("test1!");
+        driver.findElement(By.xpath("//button[text()=' Sign Up']")).click();
+
+        List<String> alertsList = driver.findElements(By.xpath("//div[@class='alert alert-danger']/p"))
+                .stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        Assert.assertTrue(alertsList.contains("The Email field must contain a valid email address."));
+    }
 }
