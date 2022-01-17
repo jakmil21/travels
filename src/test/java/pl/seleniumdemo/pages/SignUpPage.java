@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import pl.seleniumdemo.model.User;
 
 import java.util.List;
 
@@ -71,26 +70,6 @@ public class SignUpPage {
     }
 
     public void signUp() {
-        signUpBtn.click();
-    }
-
-    public void fillSignUpForm(String name, String surname, String phoneNumber, String emailAddress, String pass, String confirmPass) {
-        firstname.sendKeys(name);
-        lastname.sendKeys(surname);
-        phone.sendKeys(phoneNumber);
-        email.sendKeys(emailAddress);
-        password.sendKeys(pass);
-        confirmpassword.sendKeys(confirmPass);
-        signUpBtn.click();
-    }
-
-    public void fillSignUpForm(User user) {
-        firstname.sendKeys(user.getName());
-        lastname.sendKeys(user.getSurname());
-        phone.sendKeys(user.getPhone());
-        email.sendKeys(user.getEmail());
-        password.sendKeys(user.getPass());
-        confirmpassword.sendKeys(user.getConfirmPass());
         signUpBtn.click();
     }
 }

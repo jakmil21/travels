@@ -2,9 +2,8 @@ package pl.seleniumdemo.tests;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pl.seleniumdemo.model.User;
-import pl.seleniumdemo.pages.SignUpPage;
 import pl.seleniumdemo.pages.LoggedUserPage;
+import pl.seleniumdemo.pages.SignUpPage;
 
 public class SignUpTest extends BaseTest {
 
@@ -17,7 +16,13 @@ public class SignUpTest extends BaseTest {
 
         SignUpPage signUpPage = new SignUpPage(driver);
         signUpPage.getSignUpPage();
-        signUpPage.fillSignUpForm(name, lastname, "333444555", email, "admin1234", "admin1234");
+        signUpPage.setFirstname(name);
+        signUpPage.setLastname(lastname);
+        signUpPage.setPhoneNumber("333444555");
+        signUpPage.setEmailAddress(email);
+        signUpPage.setPassword("admin1234");
+        signUpPage.setConfirmPassword("admin1234");
+        signUpPage.signUp();
 
         LoggedUserPage resultPage = new LoggedUserPage(driver);
         Assert.assertEquals(resultPage.getWelcomeTest(), "Hi, " + name + " " + lastname);
@@ -41,14 +46,13 @@ public class SignUpTest extends BaseTest {
     public void signUpWithInvalidEmailTest() {
         SignUpPage signUpPage = new SignUpPage(driver);
         signUpPage.getSignUpPage();
-        User user = new User();
-        user.setName("Andrzej");
-        user.setSurname("Testowy");
-        user.setPhone("111222333");
-        user.setEmail("test.com");
-        user.setPass("admin123");
-        user.setConfirmPass("admin123");
-        signUpPage.fillSignUpForm(user);
+        signUpPage.setFirstname("Andrzej");
+        signUpPage.setLastname("Testowy");
+        signUpPage.setPhoneNumber("111222333");
+        signUpPage.setEmailAddress("test.com");
+        signUpPage.setPassword("admin123");
+        signUpPage.setConfirmPassword("admin123");
+        signUpPage.signUp();
 
         LoggedUserPage resultPage = new LoggedUserPage(driver);
         Assert.assertTrue(resultPage.alertsList().contains("The Email field must contain a valid email address."));
